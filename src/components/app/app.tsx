@@ -23,7 +23,7 @@ import {
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from '../../services/store';
 import { useEffect } from 'react';
-import { ingredientsThunk } from '@slices';
+import { getUserThunk, ingredientsThunk } from '@slices';
 
 const App = () => {
   const navigate = useNavigate();
@@ -32,6 +32,7 @@ const App = () => {
   const background = location.state?.background;
 
   useEffect(() => {
+    dispatch(getUserThunk());
     dispatch(ingredientsThunk());
   }, []);
 

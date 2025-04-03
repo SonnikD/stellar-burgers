@@ -4,7 +4,7 @@ import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
 import { useDispatch, useSelector } from '../../services/store';
 import { ingredientsSelector, orderSelector, orderThunk } from '@slices';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 export const OrderInfo: FC = () => {
   /** TODO: взять переменные orderData и ingredients из стора */
@@ -13,9 +13,10 @@ export const OrderInfo: FC = () => {
   const orderData = orderState.order;
   const orderNumber = useParams().number;
   const ingredientsState = useSelector(ingredientsSelector);
-
   const ingredients: TIngredient[] = ingredientsState.ingredients;
   const isLoading = orderState.isLoading;
+  const location = useLocation();
+  const isModal = location.state?.background;
 
   useEffect(() => {
     dispatch(orderThunk(Number(orderNumber)));
@@ -69,6 +70,17 @@ export const OrderInfo: FC = () => {
   if (!orderInfo) {
     return <Preloader />;
   }
-
-  return <OrderInfoUI orderInfo={orderInfo} />;
+  return (
+    <>
+      {!isModal && (
+        <h2
+          className='text text_type_digits-default'
+          style={{ textAlign: 'center', paddingTop: '120px' }}
+        >
+          #{orderState.order?.number}
+        </h2>
+      )}
+      <OrderInfoUI orderInfo={orderInfo} />;
+    </>
+  );
 };

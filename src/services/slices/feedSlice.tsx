@@ -1,11 +1,11 @@
-import { getFeedsApi } from '@api';
+import { getFeedsApi, getOrdersApi } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 
 export const feedThunk = createAsyncThunk('feed/getFeed', getFeedsApi);
 export const profileOrderThunk = createAsyncThunk(
   'feed/getOrders',
-  getFeedsApi
+  getOrdersApi
 );
 
 type TFeedState = {
@@ -57,7 +57,7 @@ export const feedSlice = createSlice({
       })
       .addCase(profileOrderThunk.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.orders = action.payload.orders;
+        state.orders = action.payload;
       });
   }
 });
